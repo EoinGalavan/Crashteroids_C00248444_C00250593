@@ -108,7 +108,7 @@ public class TestSuite
         while (asteroids[0] == null || asteroids[1] == null || asteroids[2] == null || asteroids[3] == null)
         {
             asteroid = game.GetSpawner().SpawnAsteroid();
-            switch(asteroid.name)
+            switch (asteroid.name)
             {
                 case "Asteroid(Clone)":
                     asteroids[0] = asteroid;
@@ -124,7 +124,7 @@ public class TestSuite
                     break;
             }
         }
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             game.isGameOver = false;
 
@@ -133,5 +133,16 @@ public class TestSuite
             safe = safe && game.isGameOver;
         }
         Assert.True(safe);
+    }
+
+    [UnityTest]
+    public IEnumerator GameOverSetScore0()
+    {
+        game.score = 2;
+        game.isGameOver = true;
+        game.NewGame();
+
+        Assert.AreEqual(0, game.score);
+        yield return null;
     }
 }
