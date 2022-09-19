@@ -96,4 +96,42 @@ public class TestSuite
         // 2
         Assert.AreEqual(game.score, 1);
     }
+
+    [UnityTest]
+    public IEnumerator EachAsteroidsGameOver()
+    {
+        bool safe = true;
+
+        GameObject asteroid;
+        GameObject[] asteroids = new GameObject[4];
+
+        while (asteroids[0] == null || asteroids[1] == null || asteroids[2] == null || asteroids[3] == null)
+        {
+            asteroid = game.GetSpawner().SpawnAsteroid();
+            switch(asteroid.name)
+            {
+                case "Asteroid(Clone)":
+                    asteroids[0] = asteroid;
+                    break;
+                case "Asteroid2(Clone)":
+                    asteroids[1] = asteroid;
+                    break;
+                case "Asteroid3(Clone)":
+                    asteroids[2] = asteroid;
+                    break;
+                case "Asteroid4(Clone)":
+                    asteroids[3] = asteroid;
+                    break;
+            }
+        }
+        for(int i = 0; i < 4; i++)
+        {
+            game.isGameOver = false;
+
+            asteroids[i].transform.position = game.GetShip().transform.position;
+            yield return new WaitForSeconds(0.1f);
+            safe = safe && game.isGameOver;
+        }
+        Assert.True(safe);
+    }
 }
